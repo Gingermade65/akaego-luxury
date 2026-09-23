@@ -3,6 +3,7 @@
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProductController;
 
 Route::get('/', function () {
     $categories = Category::where('is_active', true)->take(4)->get();
@@ -14,4 +15,7 @@ Route::get('/', function () {
         ->get();
 
     return view('welcome', compact('categories', 'featuredProducts'));
-});
+})->name('home');
+
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/products/{slug}', [ProductController::class, 'show'])->name('products.show');
