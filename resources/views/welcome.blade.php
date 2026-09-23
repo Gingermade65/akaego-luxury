@@ -37,7 +37,7 @@
         </div>
     </section>
 
-    <!-- Featured Collections Showcase -->
+    <!-- Curated Categories Section -->
     <section class="py-20 bg-luxury-black border-b border-luxury-charcoal">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center max-w-xl mx-auto mb-16 space-y-3">
@@ -46,42 +46,60 @@
                 <div class="w-12 h-[1px] bg-luxury-gold mx-auto mt-4"></div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Collection Card 1 -->
-                <div class="bg-luxury-charcoal border border-luxury-gold/20 p-8 group hover:border-luxury-gold transition duration-500 flex flex-col justify-between h-[380px] relative overflow-hidden">
-                    <div class="space-y-3 relative z-10">
-                        <span class="text-luxury-gold/70 text-[10px] uppercase tracking-[0.25em]">01 / Couture</span>
-                        <h3 class="font-serif text-2xl text-luxury-cream group-hover:text-luxury-gold transition">Haute Apparel</h3>
-                        <p class="text-luxury-cream/60 text-xs leading-relaxed font-light">Precision tailoring and handcrafted silks for evening statement looks.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                @foreach($categories as $category)
+                    <div class="bg-luxury-charcoal border border-luxury-gold/20 p-8 group hover:border-luxury-gold transition duration-500 flex flex-col justify-between h-[340px] relative overflow-hidden">
+                        <div class="space-y-3 relative z-10">
+                            <span class="text-luxury-gold/70 text-[10px] uppercase tracking-[0.25em]">0{{ $loop->iteration }} / Collection</span>
+                            <h3 class="font-serif text-2xl text-luxury-cream group-hover:text-luxury-gold transition">{{ $category->name }}</h3>
+                            <p class="text-luxury-cream/60 text-xs leading-relaxed font-light">{{ $category->description }}</p>
+                        </div>
+                        <a href="#" class="relative z-10 text-xs text-luxury-gold uppercase tracking-widest font-medium flex items-center gap-2 group-hover:translate-x-1 transition duration-300">
+                            Discover Category &rarr;
+                        </a>
                     </div>
-                    <a href="#" class="relative z-10 text-xs text-luxury-gold uppercase tracking-widest font-medium flex items-center gap-2 group-hover:translate-x-1 transition duration-300">
-                        Discover Category &rarr;
-                    </a>
-                </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
 
-                <!-- Collection Card 2 -->
-                <div class="bg-luxury-charcoal border border-luxury-gold/20 p-8 group hover:border-luxury-gold transition duration-500 flex flex-col justify-between h-[380px] relative overflow-hidden">
-                    <div class="space-y-3 relative z-10">
-                        <span class="text-luxury-gold/70 text-[10px] uppercase tracking-[0.25em]">02 / Leather Goods</span>
-                        <h3 class="font-serif text-2xl text-luxury-cream group-hover:text-luxury-gold transition">Bespoke Handbags</h3>
-                        <p class="text-luxury-cream/60 text-xs leading-relaxed font-light">Italian calfskin leather goods engineered for functional luxury.</p>
-                    </div>
-                    <a href="#" class="relative z-10 text-xs text-luxury-gold uppercase tracking-widest font-medium flex items-center gap-2 group-hover:translate-x-1 transition duration-300">
-                        Discover Category &rarr;
-                    </a>
+    <!-- Dynamic Featured Products Section -->
+    <section class="py-20 bg-luxury-black border-b border-luxury-charcoal">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+                <div>
+                    <span class="text-luxury-gold text-xs font-semibold uppercase tracking-[0.3em]">Bespoke Selection</span>
+                    <h2 class="font-serif text-3xl md:text-4xl text-luxury-cream font-normal mt-2">Featured Products</h2>
                 </div>
+                <a href="#" class="text-xs text-luxury-gold uppercase tracking-widest border-b border-luxury-gold/40 hover:border-luxury-gold pb-1 self-start md:self-auto transition">
+                    View Entire Boutique &rarr;
+                </a>
+            </div>
 
-                <!-- Collection Card 3 -->
-                <div class="bg-luxury-charcoal border border-luxury-gold/20 p-8 group hover:border-luxury-gold transition duration-500 flex flex-col justify-between h-[380px] relative overflow-hidden">
-                    <div class="space-y-3 relative z-10">
-                        <span class="text-luxury-gold/70 text-[10px] uppercase tracking-[0.25em]">03 / Accessories</span>
-                        <h3 class="font-serif text-2xl text-luxury-cream group-hover:text-luxury-gold transition">Fine Jewellery</h3>
-                        <p class="text-luxury-cream/60 text-xs leading-relaxed font-light">Subtle gold accents and timeless accents to elevate every ensemble.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                @foreach($featuredProducts as $product)
+                    <div class="bg-luxury-charcoal border border-luxury-gold/15 group hover:border-luxury-gold/50 transition duration-300 flex flex-col justify-between">
+                        <div class="p-4 relative">
+                            <div class="w-full h-64 bg-luxury-black border border-luxury-gold/10 flex items-center justify-center p-6 text-center group-hover:scale-[1.02] transition duration-500">
+                                <span class="font-serif text-luxury-gold/40 text-xl tracking-widest uppercase">{{ $product->category->name }}</span>
+                            </div>
+                            @if($product->compare_at_price)
+                                <span class="absolute top-6 right-6 bg-luxury-gold text-luxury-black text-[10px] font-bold uppercase tracking-widest px-2 py-1">
+                                    Exclusive
+                                </span>
+                            @endif
+                        </div>
+                        <div class="p-6 pt-2 space-y-2">
+                            <span class="text-[10px] uppercase tracking-widest text-luxury-gold/70">{{ $product->category->name }}</span>
+                            <h3 class="font-serif text-lg text-luxury-cream group-hover:text-luxury-gold transition line-clamp-1">{{ $product->name }}</h3>
+                            <p class="text-xs text-luxury-cream/50 line-clamp-2 font-light">{{ $product->summary }}</p>
+                            <div class="pt-3 flex items-center justify-between border-t border-luxury-gold/10">
+                                <span class="font-serif text-luxury-gold text-base">${{ number_format($product->price, 2) }}</span>
+                                <a href="#" class="text-[10px] uppercase tracking-widest text-luxury-cream hover:text-luxury-gold transition">View Piece &rarr;</a>
+                            </div>
+                        </div>
                     </div>
-                    <a href="#" class="relative z-10 text-xs text-luxury-gold uppercase tracking-widest font-medium flex items-center gap-2 group-hover:translate-x-1 transition duration-300">
-                        Discover Category &rarr;
-                    </a>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>
