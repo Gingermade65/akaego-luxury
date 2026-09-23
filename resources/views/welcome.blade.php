@@ -36,4 +36,53 @@
             </div>
         </div>
     </section>
+
+    <!-- Featured Collections Showcase -->
+    <section class="py-20 bg-luxury-black border-b border-luxury-charcoal">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-xl mx-auto mb-16 space-y-3">
+                <span class="text-luxury-gold text-xs font-semibold uppercase tracking-[0.3em]">Curated Categories</span>
+                <h2 class="font-serif text-3xl md:text-4xl text-luxury-cream font-normal">Featured Collections</h2>
+                <div class="w-12 h-[1px] bg-luxury-gold mx-auto mt-4"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Collection Card 1 -->
+                <div class="bg-luxury-charcoal border border-luxury-gold/20 p-8 group hover:border-luxury-gold transition duration-500 flex flex-col justify-between h-[380px] relative overflow-hidden">
+                    <div class="space-y-3 relative z-10">
+                        <span class="text-luxury-gold/70 text-[10px] uppercase tracking-[0.25em]">01 / Couture</span>
+                        <h3 class="font-serif text-2xl text-luxury-cream group-hover:text-luxury-gold transition">Haute Apparel</h3>
+                        <p class="text-luxury-cream/60 text-xs leading-relaxed font-light">Precision tailoring and handcrafted silks for evening statement looks.</p>
+                    </div>
+                    <a href="#" class="relative z-10 text-xs text-luxury-gold uppercase tracking-widest font-medium flex items-center gap-2 group-hover:translate-x-1 transition duration-300">
+                        Discover Category &rarr;
+                    </a>
+                </div>
+
+                <!-- Collection Card 2 -->
+                <div class="bg-luxury-charcoal border border-luxury-gold/20 p-8 group hover:border-luxury-gold transition duration-500 flex flex-col justify-between h-[380px] relative overflow-hidden">
+                    <div class="space-y-3 relative z-10">
+                        <span class="text-luxury-gold/70 text-[10px] uppercase tracking-[0.25em]">02 / Leather Goods</span>
+                        <h3 class="font-serif text-2xl text-luxury-cream group-hover:text-luxury-gold transition">Bespoke Handbags</h3>
+                        <p class="text-luxury-cream/60 text-xs leading-relaxed font-light">Italian calfskin leather goods engineered for functional luxury.</p>
+                    </div>
+                    <a href="#" class="relative z-10 text-xs text-luxury-gold uppercase tracking-widest font-medium flex items-center gap-2 group-hover:translate-x-1 transition duration-300">
+                        Discover Category &rarr;
+                    </a>
+                </div>
+
+                <!-- Collection Card 3 -->
+                <div class="bg-luxury-charcoal border border-luxury-gold/20 p-8 group hover:border-luxury-gold transition duration-500 flex flex-col justify-between h-[380px] relative overflow-hidden">
+                    <div class="space-y-3 relative z-10">
+                        <span class="text-luxury-gold/70 text-[10px] uppercase tracking-[0.25em]">03 / Accessories</span>
+                        <h3 class="font-serif text-2xl text-luxury-cream group-hover:text-luxury-gold transition">Fine Jewellery</h3>
+                        <p class="text-luxury-cream/60 text-xs leading-relaxed font-light">Subtle gold accents and timeless accents to elevate every ensemble.</p>
+                    </div>
+                    <a href="#" class="relative z-10 text-xs text-luxury-gold uppercase tracking-widest font-medium flex items-center gap-2 group-hover:translate-x-1 transition duration-300">
+                        Discover Category &rarr;
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
 </x-app-layout>
