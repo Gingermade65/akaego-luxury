@@ -14,10 +14,10 @@
                     Discover bespoke craftsmanship, limited-edition couture, and refined boutique essentials designed for those who appreciate understated opulence.
                 </p>
                 <div class="pt-4 flex flex-wrap gap-4">
-                    <a href="#" class="inline-block bg-luxury-gold text-luxury-black font-semibold text-xs uppercase tracking-widest px-8 py-4 hover:bg-luxury-champagne transition duration-300">
+                    <a href="{{ route('products.index') }}" class="inline-block bg-luxury-gold text-luxury-black font-semibold text-xs uppercase tracking-widest px-8 py-4 hover:bg-luxury-champagne transition duration-300">
                         Explore Collection
                     </a>
-                    <a href="#" class="inline-block border border-luxury-gold/40 text-luxury-cream font-light text-xs uppercase tracking-widest px-8 py-4 hover:border-luxury-gold hover:text-luxury-gold transition duration-300">
+                    <a href="{{ route('products.index') }}" class="inline-block border border-luxury-gold/40 text-luxury-cream font-light text-xs uppercase tracking-widest px-8 py-4 hover:border-luxury-gold hover:text-luxury-gold transition duration-300">
                         View Lookbook
                     </a>
                 </div>
@@ -54,7 +54,7 @@
                             <h3 class="font-serif text-2xl text-luxury-cream group-hover:text-luxury-gold transition">{{ $category->name }}</h3>
                             <p class="text-luxury-cream/60 text-xs leading-relaxed font-light">{{ $category->description }}</p>
                         </div>
-                        <a href="#" class="relative z-10 text-xs text-luxury-gold uppercase tracking-widest font-medium flex items-center gap-2 group-hover:translate-x-1 transition duration-300">
+                        <a href="{{ route('products.index', ['category' => $category->slug]) }}" class="relative z-10 text-xs text-luxury-gold uppercase tracking-widest font-medium flex items-center gap-2 group-hover:translate-x-1 transition duration-300">
                             Discover Category &rarr;
                         </a>
                     </div>
@@ -71,7 +71,7 @@
                     <span class="text-luxury-gold text-xs font-semibold uppercase tracking-[0.3em]">Bespoke Selection</span>
                     <h2 class="font-serif text-3xl md:text-4xl text-luxury-cream font-normal mt-2">Featured Products</h2>
                 </div>
-                <a href="#" class="text-xs text-luxury-gold uppercase tracking-widest border-b border-luxury-gold/40 hover:border-luxury-gold pb-1 self-start md:self-auto transition">
+                <a href="{{ route('products.index') }}" class="text-xs text-luxury-gold uppercase tracking-widest border-b border-luxury-gold/40 hover:border-luxury-gold pb-1 self-start md:self-auto transition">
                     View Entire Boutique &rarr;
                 </a>
             </div>
@@ -80,8 +80,14 @@
                 @foreach($featuredProducts as $product)
                     <div class="bg-luxury-charcoal border border-luxury-gold/15 group hover:border-luxury-gold/50 transition duration-300 flex flex-col justify-between">
                         <div class="p-4 relative">
-                            <div class="w-full h-64 bg-luxury-black border border-luxury-gold/10 flex items-center justify-center p-6 text-center group-hover:scale-[1.02] transition duration-500">
-                                <span class="font-serif text-luxury-gold/40 text-xl tracking-widest uppercase">{{ $product->category->name }}</span>
+                            <div class="w-full h-64 bg-luxury-black border border-luxury-gold/10 overflow-hidden relative flex items-center justify-center">
+                                @if($product->primaryImage)
+                                    <img src="{{ $product->primaryImage->image_path }}" 
+                                         alt="{{ $product->name }}" 
+                                         class="w-full h-full object-cover group-hover:scale-105 transition duration-700 ease-out">
+                                @else
+                                    <span class="font-serif text-luxury-gold/40 text-xl tracking-widest uppercase">{{ $product->category->name }}</span>
+                                @endif
                             </div>
                             @if($product->compare_at_price)
                                 <span class="absolute top-6 right-6 bg-luxury-gold text-luxury-black text-[10px] font-bold uppercase tracking-widest px-2 py-1">
@@ -91,11 +97,13 @@
                         </div>
                         <div class="p-6 pt-2 space-y-2">
                             <span class="text-[10px] uppercase tracking-widest text-luxury-gold/70">{{ $product->category->name }}</span>
-                            <h3 class="font-serif text-lg text-luxury-cream group-hover:text-luxury-gold transition line-clamp-1">{{ $product->name }}</h3>
+                            <h3 class="font-serif text-lg text-luxury-cream group-hover:text-luxury-gold transition line-clamp-1">
+                                <a href="{{ route('products.show', $product->slug) }}">{{ $product->name }}</a>
+                            </h3>
                             <p class="text-xs text-luxury-cream/50 line-clamp-2 font-light">{{ $product->summary }}</p>
                             <div class="pt-3 flex items-center justify-between border-t border-luxury-gold/10">
                                 <span class="font-serif text-luxury-gold text-base">${{ number_format($product->price, 2) }}</span>
-                                <a href="#" class="text-[10px] uppercase tracking-widest text-luxury-cream hover:text-luxury-gold transition">View Piece &rarr;</a>
+                                <a href="{{ route('products.show', $product->slug) }}" class="text-[10px] uppercase tracking-widest text-luxury-cream hover:text-luxury-gold transition">View Piece &rarr;</a>
                             </div>
                         </div>
                     </div>
