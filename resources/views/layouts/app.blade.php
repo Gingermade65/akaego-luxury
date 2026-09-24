@@ -15,15 +15,26 @@
     <!-- Main Navigation Bar -->
     <header class="border-b border-luxury-charcoal sticky top-0 bg-luxury-black/90 backdrop-blur-md z-50">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-            <a href="/" class="font-serif text-2xl tracking-widest font-bold text-luxury-gold hover:text-luxury-champagne transition">
+            <a href="{{ route('home') }}" class="font-serif text-2xl tracking-widest font-bold text-luxury-gold hover:text-luxury-champagne transition">
                 AKAEGO
             </a>
             
             <nav class="hidden md:flex items-center space-x-8 text-sm uppercase tracking-wider font-light">
-                <a href="#" class="hover:text-luxury-gold transition">New Arrivals</a>
-                <a href="#" class="hover:text-luxury-gold transition">Collections</a>
-                <a href="#" class="hover:text-luxury-gold transition">Boutique</a>
-                <a href="#" class="hover:text-luxury-gold transition">About</a>
+                <a href="{{ route('home') }}" class="hover:text-luxury-gold transition {{ request()->routeIs('home') ? 'text-luxury-gold font-normal' : 'text-luxury-cream/80' }}">
+                    Home
+                </a>
+                <a href="{{ route('products.index') }}" class="hover:text-luxury-gold transition {{ request()->routeIs('products.index') ? 'text-luxury-gold font-normal' : 'text-luxury-cream/80' }}">
+                    Boutique / Shop
+                </a>
+                <a href="{{ route('products.index', ['category' => 'haute-apparel']) }}" class="hover:text-luxury-gold transition text-luxury-cream/80">
+                    Apparel
+                </a>
+                <a href="{{ route('products.index', ['category' => 'bespoke-handbags']) }}" class="hover:text-luxury-gold transition text-luxury-cream/80">
+                    Handbags
+                </a>
+                <a href="{{ route('products.index', ['category' => 'timepieces']) }}" class="hover:text-luxury-gold transition text-luxury-cream/80">
+                    Timepieces
+                </a>
             </nav>
 
             <div class="flex items-center space-x-6 text-sm">
@@ -50,9 +61,9 @@
             <div>
                 <h4 class="text-xs font-semibold tracking-widest uppercase mb-4 text-luxury-gold">Explore</h4>
                 <ul class="space-y-2 text-xs text-luxury-cream/70">
-                    <li><a href="#" class="hover:text-luxury-cream">New Arrivals</a></li>
-                    <li><a href="#" class="hover:text-luxury-cream">Bespoke Collection</a></li>
-                    <li><a href="#" class="hover:text-luxury-cream">Lookbook</a></li>
+                    <li><a href="{{ route('products.index') }}" class="hover:text-luxury-cream">All Products</a></li>
+                    <li><a href="{{ route('products.index', ['category' => 'haute-apparel']) }}" class="hover:text-luxury-cream">Haute Apparel</a></li>
+                    <li><a href="{{ route('products.index', ['category' => 'bespoke-handbags']) }}" class="hover:text-luxury-cream">Handbags</a></li>
                 </ul>
             </div>
             <div>
