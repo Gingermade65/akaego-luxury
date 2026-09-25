@@ -1,11 +1,15 @@
+@inject('cartService', 'App\Services\CartService')
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $title ?? 'AKAEGO LUXURY & BOUTIQUE' }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+
 <body class="bg-luxury-black text-luxury-cream antialiased min-h-screen flex flex-col justify-between">
     <!-- Top Announcement Bar -->
     <div class="bg-luxury-charcoal border-b border-luxury-gold/20 text-luxury-gold text-xs tracking-widest text-center py-2 uppercase">
@@ -15,31 +19,41 @@
     <!-- Main Navigation Bar -->
     <header class="border-b border-luxury-charcoal sticky top-0 bg-luxury-black/90 backdrop-blur-md z-50">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-            <a href="{{ route('home') }}" class="font-serif text-2xl tracking-widest font-bold text-luxury-gold hover:text-luxury-champagne transition">
+            <a href="{{ route('home') }}"
+               class="font-serif text-2xl tracking-widest font-bold text-luxury-gold hover:text-luxury-champagne transition">
                 AKAEGO
             </a>
-            
+
             <nav class="hidden md:flex items-center space-x-8 text-sm uppercase tracking-wider font-light">
-                <a href="{{ route('home') }}" class="hover:text-luxury-gold transition {{ request()->routeIs('home') ? 'text-luxury-gold font-normal' : 'text-luxury-cream/80' }}">
+                <a href="{{ route('home') }}"
+                   class="hover:text-luxury-gold transition {{ request()->routeIs('home') ? 'text-luxury-gold font-normal' : 'text-luxury-cream/80' }}">
                     Home
                 </a>
-                <a href="{{ route('products.index') }}" class="hover:text-luxury-gold transition {{ request()->routeIs('products.index') ? 'text-luxury-gold font-normal' : 'text-luxury-cream/80' }}">
+                <a href="{{ route('products.index') }}"
+                   class="hover:text-luxury-gold transition {{ request()->routeIs('products.index') ? 'text-luxury-gold font-normal' : 'text-luxury-cream/80' }}">
                     Boutique / Shop
                 </a>
-                <a href="{{ route('products.index', ['category' => 'haute-apparel']) }}" class="hover:text-luxury-gold transition text-luxury-cream/80">
+                <a href="{{ route('products.index', ['category' => 'haute-apparel']) }}"
+                   class="hover:text-luxury-gold transition text-luxury-cream/80">
                     Apparel
                 </a>
-                <a href="{{ route('products.index', ['category' => 'bespoke-handbags']) }}" class="hover:text-luxury-gold transition text-luxury-cream/80">
+                <a href="{{ route('products.index', ['category' => 'bespoke-handbags']) }}"
+                   class="hover:text-luxury-gold transition text-luxury-cream/80">
                     Handbags
                 </a>
-                <a href="{{ route('products.index', ['category' => 'timepieces']) }}" class="hover:text-luxury-gold transition text-luxury-cream/80">
+                <a href="{{ route('products.index', ['category' => 'timepieces']) }}"
+                   class="hover:text-luxury-gold transition text-luxury-cream/80">
                     Timepieces
                 </a>
             </nav>
 
             <div class="flex items-center space-x-6 text-sm">
                 <a href="#" class="hover:text-luxury-gold transition">Account</a>
-                <a href="#" class="hover:text-luxury-gold transition">Cart (0)</a>
+
+                <a href="{{ route('cart.index') }}" class="hover:text-luxury-gold transition flex items-center gap-1">
+                    <span>Cart</span>
+                    <span class="text-luxury-gold font-mono">({{ $cartService->getItemCount() }})</span>
+                </a>
             </div>
         </div>
     </header>
