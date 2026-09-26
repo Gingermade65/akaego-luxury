@@ -97,7 +97,7 @@
                             <span class="font-serif text-2xl text-luxury-gold">${{ number_format($subtotal, 2) }}</span>
                         </div>
 
-                        <a href="#" class="block w-full bg-luxury-gold text-luxury-black text-xs uppercase tracking-widest font-semibold text-center py-4 hover:bg-luxury-champagne transition">
+                        <a href="{{ route('checkout.index') }}php artisan route:clear" class="block w-full bg-luxury-gold text-luxury-black text-xs uppercase tracking-widest font-semibold text-center py-4 hover:bg-luxury-champagne transition">
                             Proceed to Secure Checkout
                         </a>
 
