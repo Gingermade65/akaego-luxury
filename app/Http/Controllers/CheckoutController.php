@@ -29,11 +29,14 @@ class CheckoutController extends Controller
             return redirect()->route('cart.index')->with('error', 'Your shopping cart is empty.');
         }
 
+        $cartItems = $cart;
         $subtotal = $this->cartService->getSubtotal();
-        $shippingFee = $subtotal > 500000 ? 0.00 : 15000.00;
+        
+        // Shipping Fee Logic: ₦2,000 below ₦100,000; Free for ₦100,000 and above
+        $shippingFee = $subtotal >= 100000 ? 0.00 : 2000.00;
         $total = $subtotal + $shippingFee;
 
-        return view('checkout.index', compact('cart', 'subtotal', 'shippingFee', 'total'));
+        return view('checkout.index', compact('cart', 'cartItems', 'subtotal', 'shippingFee', 'total'));
     }
 
     public function store(Request $request)
@@ -57,7 +60,9 @@ class CheckoutController extends Controller
         ]);
 
         $subtotal = $this->cartService->getSubtotal();
-        $shippingFee = $subtotal > 500000 ? 0.00 : 15000.00;
+        
+        // Shipping Fee Logic: ₦2,000 below ₦100,000; Free for ₦100,000 and above
+        $shippingFee = $subtotal >= 100000 ? 0.00 : 2000.00;
         $total = $subtotal + $shippingFee;
 
         $order = DB::transaction(function () use ($validated, $cart, $subtotal, $shippingFee, $total) {
@@ -124,9 +129,6 @@ class CheckoutController extends Controller
         return redirect()->route('checkout.success', $order->order_number);
     }
 
-    /**
-     * Handle Callback Verification
-     */
     public function handlePaystackCallback(Request $request)
     {
         $reference = $request->query('reference');

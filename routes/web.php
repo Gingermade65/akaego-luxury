@@ -45,22 +45,28 @@ Route::delete('/cart/remove/{id}', [CartController::class, 'destroy'])->name('ca
 
 /*
 |--------------------------------------------------------------------------
-| Checkout & Paystack Payment Routes
+| Checkout & Paystack Payment Routes (Protected)
 |--------------------------------------------------------------------------
 */
-Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
-Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
-Route::get('/payment/callback', [CheckoutController::class, 'handlePaystackCallback'])->name('paystack.callback');
-Route::get('/checkout/success/{order_number}', [CheckoutController::class, 'success'])->name('checkout.success');
-
+Route::middleware(['auth'])->group(function () {
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+    Route::get('/payment/callback', [CheckoutController::class, 'handlePaystackCallback'])->name('paystack.callback');
+    Route::get('/checkout/success/{order_number}', [CheckoutController::class, 'success'])->name('checkout.success');
+});
 /*
 |--------------------------------------------------------------------------
-| Client Dashboard & Profile (Protected Routes)
+| Authenticated Client Dashboard & Profile (Protected Routes)
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
-        return view('dashboard');
+        $orders = Auth::user()->orders()
+            ->with(['items.product'])
+            ->latest()
+            ->get();
+
+        return view('dashboard', compact('orders'));
     })->name('dashboard');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
