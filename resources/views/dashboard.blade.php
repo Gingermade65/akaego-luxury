@@ -11,39 +11,53 @@
                 </h1>
             </div>
 
-            <!-- Quick Action: Log Out -->
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="border border-luxury-gold/40 text-luxury-gold hover:bg-luxury-gold hover:text-luxury-black text-xs font-semibold uppercase tracking-widest px-6 py-3 transition duration-300">
-                    Log Out
-                </button>
-            </form>
+            <!-- Action Buttons: Profile & Log Out -->
+            <div class="flex items-center gap-3">
+                <a href="{{ route('profile.edit') }}" class="bg-luxury-gold text-luxury-black text-xs font-semibold uppercase tracking-widest px-6 py-3 hover:bg-luxury-champagne transition duration-300">
+                    Edit Profile
+                </a>
+
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="border border-luxury-gold/40 text-luxury-gold hover:bg-luxury-gold hover:text-luxury-black text-xs font-semibold uppercase tracking-widest px-6 py-3 transition duration-300">
+                        Log Out
+                    </button>
+                </form>
+            </div>
         </div>
 
         <!-- Dashboard Content Grid -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <!-- Profile Info Card -->
-            <div class="bg-luxury-charcoal border border-luxury-gold/20 p-6">
-                <h2 class="font-serif text-lg text-luxury-gold tracking-wide mb-4">Account Information</h2>
-                <div class="space-y-3 text-xs text-luxury-cream/80">
-                    <div>
-                        <span class="text-luxury-cream/50 uppercase tracking-wider block">Full Name</span>
-                        <p class="text-sm text-luxury-cream mt-0.5">{{ Auth::user()->name }}</p>
+            <div class="bg-luxury-charcoal border border-luxury-gold/20 p-6 flex flex-col justify-between">
+                <div>
+                    <h2 class="font-serif text-lg text-luxury-gold tracking-wide mb-4">Account Information</h2>
+                    <div class="space-y-3 text-xs text-luxury-cream/80">
+                        <div>
+                            <span class="text-luxury-cream/50 uppercase tracking-wider block">Full Name</span>
+                            <p class="text-sm text-luxury-cream mt-0.5">{{ Auth::user()->name }}</p>
+                        </div>
+                        <div>
+                            <span class="text-luxury-cream/50 uppercase tracking-wider block">Email Address</span>
+                            <p class="text-sm text-luxury-cream mt-0.5">{{ Auth::user()->email }}</p>
+                        </div>
+                        <div>
+                            <span class="text-luxury-cream/50 uppercase tracking-wider block">Membership Status</span>
+                            <span class="inline-block mt-1 bg-luxury-gold/10 text-luxury-gold border border-luxury-gold/30 px-2.5 py-1 font-mono text-[10px] uppercase tracking-widest">
+                                Verified Client
+                            </span>
+                        </div>
                     </div>
-                    <div>
-                        <span class="text-luxury-cream/50 uppercase tracking-wider block">Email Address</span>
-                        <p class="text-sm text-luxury-cream mt-0.5">{{ Auth::user()->email }}</p>
-                    </div>
-                    <div>
-                        <span class="text-luxury-cream/50 uppercase tracking-wider block">Membership Status</span>
-                        <span class="inline-block mt-1 bg-luxury-gold/10 text-luxury-gold border border-luxury-gold/30 px-2.5 py-1 font-mono text-[10px] uppercase tracking-widest">
-                            Verified Client
-                        </span>
-                    </div>
+                </div>
+
+                <div class="mt-6 pt-4 border-t border-luxury-gold/10">
+                    <a href="{{ route('profile.edit') }}" class="text-xs text-luxury-gold hover:text-luxury-champagne uppercase tracking-widest font-semibold inline-flex items-center gap-1">
+                        Manage Security & Settings &rarr;
+                    </a>
                 </div>
             </div>
 
-            <!-- Recent Orders / Collections Card -->
+            <!-- Boutique Navigation Card -->
             <div class="md:col-span-2 bg-luxury-charcoal border border-luxury-gold/20 p-6">
                 <h2 class="font-serif text-lg text-luxury-gold tracking-wide mb-4">Boutique Navigation</h2>
                 <p class="text-xs text-luxury-cream/70 leading-relaxed mb-6">
