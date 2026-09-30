@@ -6,7 +6,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\ProfileController;
 
+/*
+|--------------------------------------------------------------------------
+| Homepage & Storefront Routes
+|--------------------------------------------------------------------------
+*/
 Route::get('/', function () {
     $categories = Category::where('is_active', true)->take(4)->get();
     
@@ -19,17 +25,52 @@ Route::get('/', function () {
     return view('welcome', compact('categories', 'featuredProducts'));
 })->name('home');
 
+/*
+|--------------------------------------------------------------------------
+| Catalog Routes
+|--------------------------------------------------------------------------
+*/
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{slug}', [ProductController::class, 'show'])->name('products.show');
 
-
+/*
+|--------------------------------------------------------------------------
+| Cart Routes
+|--------------------------------------------------------------------------
+*/
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/add', [CartController::class, 'store'])->name('cart.add');
 Route::patch('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
 Route::delete('/cart/remove/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
 
+/*
+|--------------------------------------------------------------------------
+| Checkout & Paystack Payment Routes
+|--------------------------------------------------------------------------
+*/
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
 Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
-Route::get('/checkout/success/{order_number}', [CheckoutController::class, 'success'])->name('checkout.success');
 Route::get('/payment/callback', [CheckoutController::class, 'handlePaystackCallback'])->name('paystack.callback');
 Route::get('/checkout/success/{order_number}', [CheckoutController::class, 'success'])->name('checkout.success');
+
+/*
+|--------------------------------------------------------------------------
+| Client Dashboard & Profile (Protected Routes)
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Laravel Breeze Auth System (Login, Register, Password Reset)
+|--------------------------------------------------------------------------
+*/
+require __DIR__.'/auth.php';
