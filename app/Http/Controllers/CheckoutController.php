@@ -9,6 +9,8 @@ use App\Services\PaystackService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use App\Mail\OrderConfirmationMail;
+use Illuminate\Support\Facades\Mail;
 
 class CheckoutController extends Controller
 {
@@ -100,7 +102,7 @@ class CheckoutController extends Controller
             return $order;
         });
 
-        // Paystack Payment Redirect
+       // Paystack Payment Redirect
         if ($validated['payment_method'] === 'paystack') {
             try {
                 $paystackData = [
@@ -119,12 +121,28 @@ class CheckoutController extends Controller
                 if (isset($response['data']['authorization_url'])) {
                     return redirect($response['data']['authorization_url']);
                 }
+
+                // Log unexpected API response internally
+                \Log::error('Paystack initialization response invalid: ', (array) $response);
+
+                return redirect()->route('checkout.index')->with('error', 'Unable to initiate secure payment portal. Please re-submit or contact concierge support.');
+
             } catch (\Exception $e) {
-                return redirect()->route('checkout.index')->with('error', 'Payment initialization failed: ' . $e->getMessage());
+                // Log technical error details for developers
+                \Log::error('Paystack connection exception: ' . $e->getMessage());
+
+                // Client-facing luxury message
+                return redirect()->route('checkout.index')->with('error', 'We encountered a temporary network delay connecting to our payment gateway. Please re-submit your acquisition or select an alternative payment method.');
             }
         }
 
-        // Cash / Transfer on Delivery
+        // Cash / Transfer on Delivery — Send Confirmation Email before clearing & redirecting
+        try {
+            Mail::to($order->customer_email)->send(new OrderConfirmationMail($order->load('items')));
+        } catch (\Exception $e) {
+            \Log::error('Order confirmation email failed: ' . $e->getMessage());
+        }
+
         $this->cartService->clear();
         return redirect()->route('checkout.success', $order->order_number);
     }
@@ -149,6 +167,13 @@ class CheckoutController extends Controller
                         'payment_status' => 'paid',
                         'status'         => 'processing',
                     ]);
+
+                    // Send Confirmation Email for Paystack Success
+                    try {
+                        Mail::to($order->customer_email)->send(new OrderConfirmationMail($order->load('items')));
+                    } catch (\Exception $e) {
+                        \Log::error('Paystack order confirmation email failed: ' . $e->getMessage());
+                    }
 
                     $this->cartService->clear();
                     return redirect()->route('checkout.success', $order->order_number);
