@@ -34,7 +34,7 @@ class LoginRequest extends FormRequest
     }
 
     /**
-     * Attempt to authenticate the request's credentials.
+     * Attempt to authenticate the request's credentials with strict portal role checks.
      *
      * @throws ValidationException
      */
@@ -47,6 +47,35 @@ class LoginRequest extends FormRequest
 
             throw ValidationException::withMessages([
                 'email' => trans('auth.failed'),
+            ]);
+        }
+
+        $user = Auth::user();
+
+        // Detect if request originated from Admin Portal
+        $isAdminPortalRequest = $this->input('login_type') === 'admin'
+            || $this->input('role') === 'admin'
+            || $this->query('role') === 'admin';
+
+        // Case A: Client trying to log in through Admin Portal
+        if ($isAdminPortalRequest && ! $user->isAdmin()) {
+            Auth::guard('web')->logout();
+            $this->session()->invalidate();
+            $this->session()->regenerateToken();
+
+            throw ValidationException::withMessages([
+                'email' => 'Access Denied: This portal is restricted exclusively to administrative staff.',
+            ]);
+        }
+
+        // Case B: Admin trying to log in through standard Client Portal
+        if (! $isAdminPortalRequest && $user->isAdmin()) {
+            Auth::guard('web')->logout();
+            $this->session()->invalidate();
+            $this->session()->regenerateToken();
+
+            throw ValidationException::withMessages([
+                'email' => 'Admin Account Detected: Please use the Concierge Admin Portal link at the bottom of the page to sign in.',
             ]);
         }
 
