@@ -150,10 +150,11 @@
         </div>
     </header>
 
-    <!-- Main Page Content Slot -->
-    <main class="flex-grow">
-        {{ $slot }}
-    </main>
+    <!-- Main Page Content -->
+<main class="flex-grow">
+    {{ $slot ?? '' }}
+    @yield('content')
+</main>
 
     <!-- Footer -->
     <footer class="bg-neutral-950 border-t border-amber-500/20 text-neutral-400 text-xs py-12 mt-20">
