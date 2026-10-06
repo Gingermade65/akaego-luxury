@@ -2,13 +2,14 @@
 
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
-
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -56,6 +57,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/payment/callback', [CheckoutController::class, 'handlePaystackCallback'])->name('paystack.callback');
     Route::get('/checkout/success/{order_number}', [CheckoutController::class, 'success'])->name('checkout.success');
 });
+
 /*
 |--------------------------------------------------------------------------
 | Authenticated Client Dashboard & Profile (Protected Routes)
@@ -76,8 +78,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-
+/*
+|--------------------------------------------------------------------------
+| Admin Management Routes (Protected)
+|--------------------------------------------------------------------------
+*/
 Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->prefix('admin')->name('admin.')->group(function () {
+    // Product CRUD Management
+    Route::resource('products', AdminProductController::class);
+
+    // Order Management
     Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
     Route::patch('/orders/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.update-status');
