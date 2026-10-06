@@ -16,7 +16,7 @@
                class="px-4 py-2 text-xs uppercase tracking-widest rounded border transition {{ !$status ? 'bg-amber-500/20 text-amber-200 border-amber-500/50' : 'text-neutral-400 border-neutral-800 hover:text-white hover:border-neutral-700' }}">
                 All Orders
             </a>
-            @foreach(['pending', 'processing', 'shipped', 'delivered', 'cancelled'] as $st)
+            @foreach(['pending', 'processing', 'shipped', 'completed', 'cancelled'] as $st)
                 <a href="{{ route('admin.orders.index', ['status' => $st]) }}" 
                    class="px-4 py-2 text-xs uppercase tracking-widest rounded border transition {{ $status === $st ? 'bg-amber-500/20 text-amber-200 border-amber-500/50' : 'text-neutral-400 border-neutral-800 hover:text-white hover:border-neutral-700' }}">
                     {{ ucfirst($st) }}
@@ -56,8 +56,8 @@
                                 #{{ $order->order_number }}
                             </td>
                             <td class="py-4 px-6">
-                                <div class="font-semibold text-white">{{ $order->customer_name }}</div>
-                                <div class="text-xs text-neutral-500">{{ $order->customer_email }}</div>
+                                <div class="font-semibold text-white">{{ $order->customer_name ?? ($order->user->name ?? 'Guest Client') }}</div>
+                                <div class="text-xs text-neutral-500">{{ $order->customer_email ?? ($order->user->email ?? 'N/A') }}</div>
                             </td>
                             <td class="py-4 px-6 font-semibold text-amber-100">
                                 ₦{{ number_format($order->total, 2) }}
@@ -68,7 +68,7 @@
                                 </span>
                             </td>
                             <td class="py-4 px-6">
-                                <span class="px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider rounded border {{ $order->status === 'delivered' ? 'bg-emerald-950/60 text-emerald-400 border-emerald-800' : ($order->status === 'cancelled' ? 'bg-rose-950/60 text-rose-400 border-rose-800' : 'bg-neutral-800 text-neutral-300 border-neutral-700') }}">
+                                <span class="px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider rounded border {{ $order->status === 'completed' ? 'bg-emerald-950/60 text-emerald-400 border-emerald-800' : ($order->status === 'cancelled' ? 'bg-rose-950/60 text-rose-400 border-rose-800' : 'bg-neutral-800 text-neutral-300 border-neutral-700') }}">
                                     {{ $order->status }}
                                 </span>
                             </td>
